@@ -8,7 +8,8 @@ import java.util.Scanner;
  */
 public class BoroughGuess {
 
-    public enum Borough{ BROOKLYN, BRONX, QUEENS, MANHATTAN, STATEN_ISLAND;
+    public enum Borough {
+        BROOKLYN, BRONX, QUEENS, MANHATTAN, STATEN_ISLAND;
 
         @Override
         public String toString () {
@@ -16,13 +17,17 @@ public class BoroughGuess {
         }
     }
 
+    final int MAX_TRIES = 3;
+
+
+
     Borough boroughName;
 
-//    public String readBoroughGuess(){
-//        Scanner scanner=new Scanner(System.in);
-//        String lastGuess=scanner.next();
-//        return lastGuess;
-//    }
+    public String readBoroughGuess(){
+        Scanner scanner=new Scanner(System.in);
+        String lastGuess=scanner.next();
+        return lastGuess;
+    }
 
 
 
@@ -62,7 +67,7 @@ public class BoroughGuess {
 
 
         Random r = new Random();
-        int index = r.nextInt(5 - 1);
+        int index = r.nextInt(Borough.values().length - 1);
         int tries = 0;
         int exitLoop=0;
 
@@ -72,64 +77,67 @@ public class BoroughGuess {
                 "Which borough did we advise you to visit today?" + "\n" +
                 "MANHATTAN, BRONX, QUEENS, BROOKLYN, or STATEN ISLAND?");
         System.out.println();
+
         Scanner scanner = new Scanner(System.in);
-        String boroughGuess;
+        String boroughGuess = null;
         boroughName = Borough.values()[index];
 
-        while ((tries < 3) && (exitLoop==0)) {
-            boroughGuess = scanner.nextLine();
-            if (boroughGuess.toUpperCase().equals(boroughName.toString()))
-                switch (boroughName) {
 
-                    case MANHATTAN:
-                        System.out.println("Thanks for adhering to the schedule. This is the most exciting borough of them all!");
-                        System.out.println("Places to visit include the Empire State Building, Times Square or World Trade Center.");
-                        manhattan();
-                        tries++;
-                        exitLoop=1;
-                        break;
-                    case BRONX:
-                        System.out.println("Thanks for adhering to the schedule. This is the boogie down Bronx where hip hop begun!");
-                        System.out.println("Places to visit include the Bronx Zoo, the New York Botanical Garden or Yankee Stadium");
-                        bronx();
-                        tries++;
-                        exitLoop=1;
-                        break;
-                    case BROOKLYN:
-                        System.out.println("Thanks for adhering to the schedule. Brooklyn offers a variety of culture!");
-                        System.out.println("Places to visit include the Prospect Park, Coney Island or the Brooklyn Heights Promenade");
-                        brooklyn();
-                        tries++;
-                        exitLoop=1;
-                        break;
-                    case QUEENS:
-                        System.out.println("Thanks for adhering to the schedule. Queens is the largest borough and the most diverse!");
-                        System.out.println("Places to visit include C4Q, Citi Field, or Corona Park");
-                        queens();
-                        tries++;
-                        exitLoop=1;
-                        break;
-                    case STATEN_ISLAND:
-                        System.out.println("Thanks for adhering to the schedule. This is the southern most borough and includes a ferry ride!");
-                        System.out.println("Places to visit include the Staten Island Ferry, Snug Harbor or The Children's Museum.");
-                        staten_island();
-                        tries++;
-                        exitLoop=1;
-                        break;
 
-                    default:
-                        break;
+            while ((tries < MAX_TRIES) && (exitLoop == 0)) {
+                boroughGuess = scanner.nextLine();
+                if (boroughGuess.toUpperCase().equals(boroughName.toString()))
+                    switch (boroughName) {
+
+                        case MANHATTAN:
+                            System.out.println("That's correct!  This is the most exciting borough of them all!");
+                            System.out.println("Places to visit include the Empire State Building, Times Square or World Trade Center.");
+                            manhattan();
+                            tries++;
+                            exitLoop = 1;
+                            break;
+                        case BRONX:
+                            System.out.println("That's correct!  This is the boogie down Bronx where hip hop began!");
+                            System.out.println("Places to visit include the Bronx Zoo, the New York Botanical Garden or Yankee Stadium");
+                            bronx();
+                            tries++;
+                            exitLoop = 1;
+                            break;
+                        case BROOKLYN:
+                            System.out.println("That's correct!  Brooklyn offers a variety of culture!");
+                            System.out.println("Places to visit include the Prospect Park, Coney Island or the Brooklyn Heights Promenade");
+                            brooklyn();
+                            tries++;
+                            exitLoop = 1;
+                            break;
+                        case QUEENS:
+                            System.out.println("That's correct! Queens is the largest borough and the most diverse!");
+                            System.out.println("Places to visit include C4Q, Citi Field, or Corona Park");
+                            queens();
+                            tries++;
+                            exitLoop = 1;
+                            break;
+                        case STATEN_ISLAND:
+                            System.out.println("That's correct! This is the southern most borough and includes a ferry ride!");
+                            System.out.println("Places to visit include the Staten Island Ferry, Snug Harbor or The Children's Museum.");
+                            staten_island();
+                            tries++;
+                            exitLoop = 1;
+                            break;
+
+                        default:
+                            break;
+                    }
+                else {
+                    if (tries != 2)
+                        System.out.println("Try again:");
                 }
-            else {
-                if (tries != 2)
-                    System.out.println("Try again:");
-            }
-            tries++;
+                tries++;
 
-        }
-        if (tries == 3) {
-            System.out.println("The borough we advised you to visit today was: " + boroughName);
-        }
+            }
+            if (!boroughGuess.toUpperCase().equals(boroughName.toString())) {
+                System.out.println("The borough we advised you to visit today was: " + boroughName);
+            }
 
 
     }
@@ -137,11 +145,12 @@ public class BoroughGuess {
     public static void manhattan(){
         Scanner scanner = new Scanner (System.in);
         System.out.println("Type 1: for Empire State Building or" +"\n"+"Type 2: for Times Square"+"\n"+"Type 3: for World Trade Center");
-        int placeToVisit = scanner.nextInt();
+        int placeToVisit=0;
+        if (scanner.hasNextInt()){placeToVisit = scanner.nextInt();}
         if (placeToVisit == 1){
             System.out.println("This is correct!  A cab will be on the way to take you to your destination!");
         }else if (placeToVisit == 2 || placeToVisit ==3){
-            System.out.println("Oh No! Please print your itineary next time.  I will not send a cab your way!");
+            System.out.println("This is incorrect. I will not send a cab your way!");
         }else{
             System.out.println("This was not an option. You Lose!");
         }
@@ -154,7 +163,7 @@ public class BoroughGuess {
         if (placeToVisit == 1){
             System.out.println("This is correct!  A cab will be on the way to take you to your destination!");
         }else if (placeToVisit == 2 || placeToVisit ==3){
-            System.out.println("Oh No! Please print your itineary next time.  I will not send a cab your way!");
+            System.out.println("This is not correct.  I will not send a cab your way!");
         }else{
             System.out.println("This was not an option. You Lose!");
         }
@@ -163,11 +172,13 @@ public class BoroughGuess {
     public static void brooklyn(){
         Scanner scanner = new Scanner (System.in);
         System.out.println("Type 1: for Coney Island or" +"\n"+"Type 2: for Brooklyn Botanical Garden"+"\n"+"Type 3: for Brooklyn Heights Promenade");
-        int placeToVisit = scanner.nextInt();
+        int placeToVisit=0;
+        if (scanner.hasNextInt()){placeToVisit = scanner.nextInt();}
+
         if (placeToVisit == 1){
             System.out.println("This is correct!  A cab will be on the way to take you to your destination!");
         }else if (placeToVisit == 2 || placeToVisit ==3){
-            System.out.println("Oh No! Please print your itineary next time.  I will not send a cab your way!");
+            System.out.println("This is not correct..  I will not send a cab your way!");
         }else{
             System.out.println("This was not an option. You Lose!");
         }
@@ -176,11 +187,13 @@ public class BoroughGuess {
     public static void queens(){
         Scanner scanner = new Scanner (System.in);
         System.out.println("Type 1: for C4Q or" +"\n"+"Type 2: for CitiField Stadium"+"\n"+"Type 3: for Corona Park");
-        int placeToVisit = scanner.nextInt();
-        if (placeToVisit == 1){
+        int placeToVisit=0;
+        if (scanner.hasNextInt()){placeToVisit = scanner.nextInt();}
+
+        if (placeToVisit == 1 ){
             System.out.println("This is correct!  A cab will be on the way to take you to your destination!");
         }else if (placeToVisit == 2 || placeToVisit ==3){
-            System.out.println("Oh No! Please print your itineary next time.  I will not send a cab your way!");
+            System.out.println("This is not correct..  I will not send a cab your way!");
         }else{
             System.out.println("This was not an option. You Lose!");
         }
@@ -189,41 +202,42 @@ public class BoroughGuess {
     public static void staten_island(){
         Scanner scanner = new Scanner (System.in);
         System.out.println("Type 1: for Staten Island Ferry or" +"\n"+"Type 2: for Snug Harbor"+"\n"+"Type 3: for SI Children's Museum");
-        int placeToVisit = scanner.nextInt();
+        int placeToVisit=0;
+        if (scanner.hasNextInt()){placeToVisit = scanner.nextInt();}
         if (placeToVisit == 1){
             System.out.println("This is correct!  A cab will be on the way to take you to your destination!");
         }else if (placeToVisit == 2 || placeToVisit ==3){
-            System.out.println("Oh No! Please print your itineary next time.  I will not send a cab your way!");
+            System.out.println("This is not correct..  I will not send a cab your way!");
         }else{
             System.out.println("This was not an option. You Lose!");
         }
     }
 
 
-    public static void main(String[] args) {
-
-        BoroughGuess game = new BoroughGuess();
-        game.startBoroughGame();
-
-        String userAnswer;       //code needed to get input
-
-
-        do{
-            System.out.println("Do you want to play again?");
-            Scanner scanner = new Scanner(System.in);
-            userAnswer = scanner.next().toLowerCase();
-            //System.out.println(userAnswer);
-            if (userAnswer.equals("yes") || userAnswer.equals("y")){
-                game.startBoroughGame();
-            }
-            else if (userAnswer.equals("no") || userAnswer.equals("n")) {
-                break;
-             }else {
-                 System.out.println("Try again:");
-            }
-        }while(true);
-        /******************************************/
-    }
+//    public static void main(String[] args) {
+//
+//        BoroughGuess game = new BoroughGuess();
+//        game.startBoroughGame();
+//
+//        String userAnswer;       //code needed to get input
+//
+//
+//        do{
+//            System.out.println("Do you want to play again?");
+//            Scanner scanner = new Scanner(System.in);
+//            userAnswer = scanner.next().toLowerCase();
+//            //System.out.println(userAnswer);
+//            if (userAnswer.equals("yes") || userAnswer.equals("y")){
+//                game.startBoroughGame();
+//            }
+//            else if (userAnswer.equals("no") || userAnswer.equals("n")) {
+//                break;
+//             }else {
+//                 System.out.println("Try again:");
+//            }
+//        }while(true);
+//        /******************************************/
+//    }
 
 
 
